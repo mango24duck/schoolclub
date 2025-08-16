@@ -6,7 +6,6 @@
 <ul>
     {% for club in clubs %}
         <li>
-            <img src="{{ url_for('uploaded_file', filename=club.logo_filename or 'placeholder.png') }}" alt="로고" width="50">
             <a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a>
         </li>
     {% else %}

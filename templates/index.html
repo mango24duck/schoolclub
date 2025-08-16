@@ -33,7 +33,6 @@
     <ul>
         {% for club in clubs %}
             <li>
-                <img src="{{ url_for('uploaded_file', filename=club.logo_filename or 'placeholder.png') }}" alt="로고" width="50">
                 <a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a> - {{ club.one_liner }}
                 <form action="{{ url_for('toggle_favorite', club_id=club.id) }}" method="post" style="display:inline">
                     {% if club.id in fav_ids %}
