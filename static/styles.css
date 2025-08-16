@@ -37,6 +37,11 @@ nav a {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+/* ✅ index 화면 전용 들여쓰기 */
+.index-content {
+    padding-left: 1.5rem;   /* 필요하면 2rem, 24px 등으로 조정 가능 */
+}
+
 button {
     background-color: #4CAF50;
     border: none;
