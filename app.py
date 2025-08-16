@@ -38,11 +38,11 @@ def create_app():
         return render_template('index.html', clubs=clubs, tags=tags, selected_tag=tag, fav_ids=fav_ids)
 
     @app.route('/club/<int:club_id>')
-    def club_form(club_id):
+    def club_detail(club_id):
         club = Club.query.get_or_404(club_id)
         fav_ids = session.get('favorites', [])
         anns = Announcement.query.filter_by(club_id=club.id).order_by(Announcement.created_at.desc()).all()
-        return render_template('club_form.html', club=club, fav_ids=fav_ids, announcements=anns)
+        return render_template('club_detail.html', club=club, fav_ids=fav_ids, announcements=anns)
 
     # 관심 동아리 (세션 기반, 최대 3개)
     @app.route('/favorite/<int:club_id>', methods=['POST'])

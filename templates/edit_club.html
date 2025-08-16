@@ -4,7 +4,7 @@
 {% block content %}
 <h2>동아리 수정 - {{ club.name }}</h2>
 <form method="post" enctype="multipart/form-data">
-    {% include 'club_form.html' %}
+    {% include 'club_detail.html' %}
     <label>모집 마감: <input type="checkbox" name="closed" {% if club.closed %}checked{% endif %}></label><br>
     <button type="submit">저장</button>
 </form>
