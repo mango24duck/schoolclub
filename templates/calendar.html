@@ -1,30 +1,29 @@
 <!-- calendar.html -->
 {% extends 'base.html' %}
+
 {% block title %}캘린더{% endblock %}
+
 {% block content %}
-<h2>캘린더</h2>
+<h2>동아리 모집 캘린더</h2>
+
 <table border="1" cellpadding="5">
-    <tr><th>동아리</th><th>모집 시작</th><th>모집 마감</th></tr>
+    <tr>
+        <th>동아리</th>
+        <th>모집 시작</th>
+        <th>모집 마감</th>
+        <th>면접 일시</th>
+    </tr>
     {% for club in clubs %}
-        <tr>
-            <td>{{ club.name }}</td>
-            <td>{{ club.recruit_start }}</td>
-            <td>{{ club.recruit_end }}</td>
-        </tr>
+    <tr>
+        <td><a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a></td>
+        <td>{{ club.recruit_start or '-' }}</td>
+        <td>{{ club.recruit_end or '-' }}</td>
+        <td>{{ club.interview_datetime or '-' }}</td>
+    </tr>
     {% else %}
-        <tr><td colspan="3">등록된 동아리가 없습니다.</td></tr>
+    <tr>
+        <td colspan="4">등록된 동아리가 없습니다.</td>
+    </tr>
     {% endfor %}
 </table>
-{% endblock %}
-
-<!-- login.html -->
-{% extends 'base.html' %}
-{% block title %}로그인{% endblock %}
-{% block content %}
-<h2>로그인</h2>
-<form method="post">
-    <label>아이디: <input type="text" name="username"></label><br>
-    <label>비밀번호: <input type="password" name="password"></label><br>
-    <button type="submit">로그인</button>
-</form>
 {% endblock %}
