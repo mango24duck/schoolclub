@@ -1,0 +1,58 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}동아리 홍보/모집{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header>
+    <h1>동아리 홍보/모집</h1>
+    <nav>
+        <a href="{{ url_for('index') }}">홈</a>
+        <a href="{{ url_for('my_favorites') }}">관심 동아리</a>
+        <a href="{{ url_for('calendar_view') }}">캘린더</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('dashboard') }}">대시보드</a>
+            <a href="{{ url_for('logout') }}">로그아웃</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">로그인</a>
+        {% endif %}
+    </nav>
+</header>
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
+
+<!-- club_detail.html -->
+{% extends 'base.html' %}
+{% block title %}{{ club.name }}{% endblock %}
+{% block content %}
+<h2>{{ club.name }}</h2>
+<img src="{{ url_for('uploaded_file', filename=club.logo_filename or 'placeholder.png') }}" alt="로고" width="100">
+<p>{{ club.description }}</p>
+<p><strong>모집 기간:</strong> {{ club.recruit_start }} ~ {{ club.recruit_end }}</p>
+<p><strong>면접 일시:</strong> {{ club.interview_datetime }}</p>
+<p><strong>정원:</strong> {{ club.capacity }}</p>
+<p><strong>연락처:</strong> {{ club.contact }}</p>
+<p><strong>작년 대회 성적:</strong> {{ club.last_year_competition }}</p>
+<p><strong>태그:</strong> {% for tag in club.tags %}{{ tag.name }} {% endfor %}</p>
+<h3>공지사항</h3>
+<ul>
+    {% for ann in announcements %}
+        <li><strong>{{ ann.title }}</strong> - {{ ann.content }} ({{ ann.created_at.date() }})</li>
+    {% else %}
+        <li>공지사항이 없습니다.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

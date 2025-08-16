@@ -1,0 +1,17 @@
+<!-- edit_club.html -->
+{% extends 'base.html' %}
+{% block title %}동아리 수정{% endblock %}
+{% block content %}
+<h2>동아리 수정 - {{ club.name }}</h2>
+<form method="post" enctype="multipart/form-data">
+    {% include 'club_form.html' %}
+    <label>모집 마감: <input type="checkbox" name="closed" {% if club.closed %}checked{% endif %}></label><br>
+    <button type="submit">저장</button>
+</form>
+<h3>공지 등록</h3>
+<form method="post" action="{{ url_for('post_announcement', club_id=club.id) }}">
+    <label>제목: <input type="text" name="title"></label><br>
+    <label>내용: <textarea name="content"></textarea></label><br>
+    <button type="submit">공지 추가</button>
+</form>
+{% endblock %}
