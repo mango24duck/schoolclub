@@ -12,6 +12,15 @@ header {
     text-align: center;
 }
 
+/* 상단 제목(링크X, span.brand) 전용 스타일 */
+header .brand {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: white;       /* 헤더 색상 유지 */
+    cursor: default;    /* 손 모양 대신 기본 커서 */
+    text-decoration: none;
+}
+
 nav a {
     margin: 0 1rem;
     color: white;
