@@ -1,14 +1,33 @@
-<header>
-    <h1><span class="brand">동아리 홍보/모집</span></h1>
-    <nav>
-        <a href="{{ url_for('index') }}">홈</a>
-        <a href="{{ url_for('my_favorites') }}">관심 동아리</a>
-        <a href="{{ url_for('calendar_view') }}">캘린더</a>
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('dashboard') }}">대시보드</a>
-            <a href="{{ url_for('logout') }}">로그아웃</a>
-        {% else %}
-            <a href="{{ url_for('login') }}">로그인</a>
-        {% endif %}
-    </nav>
-</header>
+{# templates/index.html #}
+{% extends "base.html" %}
+
+{% block title %}동아리 목록 · 동아리 홍보/모집{% endblock %}
+
+{% block content %}
+  <h2>동아리 목록</h2>
+
+  <div>
+    <strong>태그 필터:</strong>
+    <a href="{{ url_for('index') }}">전체</a>
+    {% for tag in tags %}
+      <a href="{{ url_for('index', tag=tag.name) }}">{{ tag.name }}</a>
+    {% endfor %}
+  </div>
+
+  <ul>
+    {% for club in clubs %}
+      <li>
+        <a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a> - {{ club.one_liner }}
+        <form action="{{ url_for('toggle_favorite', club_id=club.id) }}" method="post" style="display:inline">
+          {% if club.id in fav_ids %}
+            <button type="submit">관심 해제</button>
+          {% else %}
+            <button type="submit">관심 추가</button>
+          {% endif %}
+        </form>
+      </li>
+    {% else %}
+      <li>등록된 동아리가 없습니다.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
