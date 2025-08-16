@@ -21,6 +21,23 @@ def create_app():
     def load_user(user_id):
         return President.query.get(int(user_id))
 
+    # --- ✅ Jinja 커스텀 필터: strftime ---
+    @app.template_filter('strftime')
+    def _jinja_strftime(value, fmt='%Y-%m-%d'):
+        """
+        템플릿에서 {{ some_date|strftime('%Y-%m-%d') }} 형태로 사용 가능하게 함.
+        value가 None 이거나 datetime/date가 아니어도 에러 안 나게 안전 처리.
+        """
+        try:
+            if not value:
+                return ''
+            # datetime/date만 처리
+            if hasattr(value, 'strftime'):
+                return value.strftime(fmt)
+            return str(value)  # 혹시 문자열이 들어오면 그대로 반환
+        except Exception:
+            return ''
+
     # --- 유틸 ---
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -114,7 +131,7 @@ def create_app():
             interview_datetime = request.form.get('interview_datetime')
             capacity = request.form.get('capacity', type=int)
             form_link = request.form.get('form_link')
-            last_year_competition = request.form.get('last_year_competition')
+            last_year_competition = request.form.get('last_year_competition')  # 화면에서 뺐어도 get은 안전함
             contact = request.form.get('contact')
             tags_raw = request.form.get('tags', '')
 
@@ -179,7 +196,7 @@ def create_app():
             club.interview_datetime = request.form.get('interview_datetime')
             club.capacity = request.form.get('capacity', type=int)
             club.form_link = request.form.get('form_link')
-            club.last_year_competition = request.form.get('last_year_competition')
+            club.last_year_competition = request.form.get('last_year_competition')  # 화면에서 뺐어도 None이면 그대로
             club.contact = request.form.get('contact')
             club.closed = bool(request.form.get('closed'))
 
@@ -233,7 +250,7 @@ def create_app():
             return redirect(url_for('edit_club', club_id=club.id))
         db.session.add(Announcement(club_id=club.id, title=title, content=content))
         db.session.commit()
-        flash('공지를 등록했습니다.', 'success')
+        flash('공지 등록 완료', 'success')
         return redirect(url_for('edit_club', club_id=club.id))
 
     # 업로드 파일 서빙
