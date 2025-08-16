@@ -36,7 +36,7 @@
 
 <!-- club_detail.html -->
 {% extends 'base.html' %}
-{% block title %}{{ club.name }}{% endblock %}
+{{ club.name }}{% endblock %}
 {% block content %}
 <h2>{{ club.name }}</h2>
 <img src="{{ url_for('uploaded_file', filename=club.logo_filename or 'placeholder.png') }}" alt="로고" width="100">
