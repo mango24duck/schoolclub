@@ -1,30 +1,33 @@
+{# templates/index.html #}
+{% extends "base.html" %}
+
+{% block title %}동아리 목록 · 동아리 홍보/모집{% endblock %}
+
 {% block content %}
-  <div class="container">
-    <h2>동아리 목록</h2>
+  <h2>동아리 목록</h2>
 
-    <div>
-      <strong>태그 필터:</strong>
-      <a href="{{ url_for('index') }}">전체</a>
-      {% for tag in tags %}
-        <a href="{{ url_for('index', tag=tag.name) }}">{{ tag.name }}</a>
-      {% endfor %}
-    </div>
-
-    <ul>
-      {% for club in clubs %}
-        <li>
-          <a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a> - {{ club.one_liner }}
-          <form action="{{ url_for('toggle_favorite', club_id=club.id) }}" method="post" style="display:inline">
-            {% if club.id in fav_ids %}
-              <button type="submit">관심 해제</button>
-            {% else %}
-              <button type="submit">관심 추가</button>
-            {% endif %}
-          </form>
-        </li>
-      {% else %}
-        <li>등록된 동아리가 없습니다.</li>
-      {% endfor %}
-    </ul>
+  <div>
+    <strong>태그 필터:</strong>
+    <a href="{{ url_for('index') }}">전체</a>
+    {% for tag in tags %}
+      <a href="{{ url_for('index', tag=tag.name) }}">{{ tag.name }}</a>
+    {% endfor %}
   </div>
+
+  <ul>
+    {% for club in clubs %}
+      <li>
+        <a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a> - {{ club.one_liner }}
+        <form action="{{ url_for('toggle_favorite', club_id=club.id) }}" method="post" style="display:inline">
+          {% if club.id in fav_ids %}
+            <button type="submit">관심 해제</button>
+          {% else %}
+            <button type="submit">관심 추가</button>
+          {% endif %}
+        </form>
+      </li>
+    {% else %}
+      <li>등록된 동아리가 없습니다.</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
