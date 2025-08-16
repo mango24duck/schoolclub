@@ -1,15 +1,43 @@
-{% block content %}
-<h2>나의 관심 동아리</h2>
-{% if clubs %}
-    <ul>
-    {% for club in clubs %}
-        <li>
-            <h3><a href="{{ url_for('club_detail', club_id=club.id) }}">{{ club.name }}</a></h3>
-            <p>{{ club.description }}</p>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>아직 관심 동아리가 없습니다.</p>
-{% endif %}
-{% endblock %}
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}동아리 홍보/모집{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1><a href="{{ url_for('index') }}">동아리 홍보/모집</a></h1>
+        <nav>
+            <a href="{{ url_for('index') }}">홈</a> |
+            <a href="{{ url_for('my_favorites') }}">관심 동아리</a> |
+            <a href="{{ url_for('calendar_view') }}">캘린더</a> |
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}">내 동아리 관리</a> |
+                <a href="{{ url_for('logout') }}">로그아웃</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">로그인</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul id="messages">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2025 School Club Hub</p>
+    </footer>
+</body>
+</html>
